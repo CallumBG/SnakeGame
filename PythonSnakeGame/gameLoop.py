@@ -12,6 +12,9 @@ green = (0,255,0)
 
 currentScore = 0
 
+#Sets the standard refresh rate of the window
+FPS = 60
+
 clock = pygame.time.Clock()
 
 highscoreList = [0, 0, 0, 0, 0]
@@ -41,7 +44,7 @@ def startGameLoop(dis):
 
     #checks if the game is over, if not the game tracks any event that occurs
     while not game_over:
-
+        clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -69,10 +72,6 @@ def startGameLoop(dis):
         y1 = y1 + yChange
         dis.fill(blue)
         pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
-        pygame.draw.rect(dis, red, [0,0,dis.get_width(), 50])
-        text = score_font.render("Highscore: " + str(highscoreList[0]), True, yellow)
-        dis.blit(text, [300, 0, 160, 10])
-        pygame.display.update()
         snake_Head = []
         snake_Head.append(x1)
         snake_Head.append(y1)
@@ -84,6 +83,9 @@ def startGameLoop(dis):
             if x == snake_Head:
                 game_over = True
         draw_snake(snake_block, snake_List, dis)
+        pygame.draw.rect(dis, red, [0,0,dis.get_width(), 50])
+        text = score_font.render("Highscore: " + str(highscoreList[0]), True, yellow)
+        dis.blit(text, [300, 0, 160, 10])
         show_score(Length_of_snake - 1, dis)
 
         pygame.display.update()
@@ -96,6 +98,7 @@ def startGameLoop(dis):
         clock.tick(snake_speed)
         global currentScore
         currentScore = Length_of_snake - 1
+        
     updateHighscores(Length_of_snake-1)
 
 def draw_snake(snake_block, snake_list, dis):
@@ -115,7 +118,6 @@ def show_score(score, dis):
     dis.blit(value, [10,0])
 
 def updateHighscores(score):
-    print("Update highscores")
     global highscoreList
     i = 0
     while  i <= 4:
